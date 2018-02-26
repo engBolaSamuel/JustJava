@@ -1,7 +1,6 @@
 package com.example.android.justjava;
 
 
-
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -10,22 +9,18 @@ import android.view.View;
 
 import android.widget.CheckBox;
 
+import android.widget.EditText;
 import android.widget.TextView;
 
 
-
 /**
-
  * This app displays an order form to order coffee.
-
  */
 
 public class MainActivity extends AppCompatActivity {
 
 
-
     int quantity = 2;
-
 
 
     @Override
@@ -39,11 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-
      * This method is called when the plus button is clicked.
-
      */
 
     public void increment(View view) {
@@ -55,11 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-
      * This method is called when the minus button is clicked.
-
      */
 
     public void decrement(View view) {
@@ -71,21 +60,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-
      * This method is called when the order button is clicked.
-
      */
 
     public void submitOrder(View view) {
+        //Get the name
+        EditText nameField = (EditText) findViewById(R.id.name_field);
+        String name = nameField.getText().toString();
 
         // Figure out if the user wants whipped cream topping
 
         CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
 
         boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
-
 
 
         // Figure out if the user wants chocolate topping
@@ -95,60 +83,54 @@ public class MainActivity extends AppCompatActivity {
         boolean hasChocolate = chocolateCheckBox.isChecked();
 
 
-
         // Calculate the price
 
-        int price = calculatePrice();
-
+        int price = calculatePrice(hasWhippedCream, hasChocolate);
 
 
         // Display the order summary on the screen
 
-        String message = createOrderSummary(price, hasWhippedCream, hasChocolate);
+        String message = createOrderSummary(name, price, hasWhippedCream, hasChocolate);
 
         displayMessage(message);
 
     }
 
 
-
     /**
-
      * Calculates the price of the order.
-
      *
-
+     * @param hasWhippedCream the user wants whipped cream topping
+     * @param hasChocolate    the user wants chocolate topping
      * @return total price
-
      */
 
-    private int calculatePrice() {
-
-        return quantity * 5;
+    private int calculatePrice(boolean hasWhippedCream, boolean hasChocolate) {
+        int pricePerCup = 5;
+        if (hasWhippedCream) {
+            pricePerCup = pricePerCup + 1;
+        }
+        if (hasChocolate) {
+            pricePerCup = pricePerCup + 2;
+        }
+        return quantity * pricePerCup;
 
     }
 
 
-
     /**
-
      * Create summary of the order.
-
      *
-
+     * @param name
      * @param price           of the order
-
      * @param addWhippedCream is whether or not to add whipped cream to the coffee
-
      * @param addChocolate    is whether or not to add chocolate to the coffee
-
-     * @return text summary
-
+     * @return priceMessage text summary
      */
 
-    private String createOrderSummary(int price, boolean addWhippedCream, boolean addChocolate) {
+    private String createOrderSummary(String name, int price, boolean addWhippedCream, boolean addChocolate) {
 
-        String priceMessage = "Name: Lyla the Labyrinth";
+        String priceMessage = name;
 
         priceMessage += "\nAdd whipped cream? " + addWhippedCream;
 
@@ -165,11 +147,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-
      * This method displays the given quantity value on the screen.
-
      */
 
     private void displayQuantity(int numberOfCoffees) {
@@ -183,11 +162,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
-
      * This method displays the given text on the screen.
-
      */
 
     private void displayMessage(String message) {
@@ -197,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         orderSummaryTextView.setText(message);
 
     }
-
 
 
 }
